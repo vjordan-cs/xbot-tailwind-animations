@@ -1,11 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import {
-  getRandomDimensions,
-  getRandomAnimation,
-  blendModes,
-} from "../utils/utils";
-import { fetchHuemintPalette } from "../utils/colorUtils";
+import { getRandomDimensions, fetchHuemintPalette } from "../utils/utils";
 
 interface Dimensions {
   width: number;
@@ -29,44 +24,36 @@ export default function Home() {
         getRandomDimensions(400, 2000)
       );
       setDimensions(newDimensions);
-
-      const newBlendModes = Array.from(
-        { length: 6 },
-        () => blendModes[Math.floor(Math.random() * blendModes.length)]
-      );
-      setBlendModesList(newBlendModes);
     });
   }, []);
 
   return (
     <div className="bg-gray-900 h-screen relative">
-      {colors.length > 0 &&
-        blendModesList.length > 0 &&
-        dimensions.length > 0 && (
-          <>
-            {colors.map((color, index) => {
-              return (
-                <div
-                  key={index}
-                  className={`fixed rounded-full blur-3xl ${blendModesList[index]}`}
-                  style={{
-                    width: `${dimensions[index].width}px`,
-                    height: `${dimensions[index].height}px`,
-                    backgroundColor: color,
-                    top: `${
-                      Math.random() *
-                      (window.innerHeight - dimensions[index].height)
-                    }px`,
-                    left: `${
-                      Math.random() *
-                      (window.innerWidth - dimensions[index].width)
-                    }px`,
-                  }}
-                ></div>
-              );
-            })}
-          </>
-        )}
+      {colors.length > 0 && dimensions.length > 0 && (
+        <>
+          {colors.map((color, index) => {
+            return (
+              <div
+                key={index}
+                className={`fixed rounded-full blur-3xl mix-blend-difference`}
+                style={{
+                  width: `${dimensions[index].width}px`,
+                  height: `${dimensions[index].height}px`,
+                  backgroundColor: color,
+                  top: `${
+                    Math.random() *
+                    (window.innerHeight - dimensions[index].height)
+                  }px`,
+                  left: `${
+                    Math.random() *
+                    (window.innerWidth - dimensions[index].width)
+                  }px`,
+                }}
+              ></div>
+            );
+          })}
+        </>
+      )}
     </div>
   );
 }
