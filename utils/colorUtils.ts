@@ -12,7 +12,7 @@ export async function fetchHuemintPalette(): Promise<string[]> {
         "25", "45", "65", "35", "0", "35", 
         "15", "25", "45", "65", "35", "0"
       ],
-      palette: ["#ffffff", "#000000", "-", "-", "-", "-"],
+      palette: ["-", "-", "-", "-", "-", "-"],
     };
   
     const response = await fetch("https://api.huemint.com/color", {

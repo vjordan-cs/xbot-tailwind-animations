@@ -1,62 +1,72 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getRandomDimensions, getRandomAnimation } from "../utils/utils";
+import {
+  getRandomDimensions,
+  getRandomAnimation,
+  blendModes,
+} from "../utils/utils";
 import { fetchHuemintPalette } from "../utils/colorUtils";
-import { getRandomPosition } from "@/utils/positionUtils";
 
 interface Dimensions {
   width: number;
   height: number;
 }
 
-interface Position {
-  top: number;
-  left: number;
-}
-
 export default function Home() {
-  const [dimensions, setDimensions] = useState<Dimensions>({
-    width: 0,
-    height: 0,
-  });
-  const [animation, setAnimation] = useState<string>("");
+  const [dimensions, setDimensions] = useState<Dimensions[]>([]);
   const [colors, setColors] = useState<string[]>([]);
-  const [positions, setPositions] = useState<Position[]>([]);
+  const [blendModesList, setBlendModesList] = useState<string[]>([]);
 
   useEffect(() => {
-    const { width, height } = getRandomDimensions(5, 900);
-    setDimensions({ width, height });
-    const randomAnimation = getRandomAnimation();
-    setAnimation(randomAnimation);
-    console.log(randomAnimation);
+    fetchHuemintPalette().then((palette) => {
+      // Ensure there are exactly 6 colors
+      const paletteColors = palette.slice(0, 6);
+      setColors(paletteColors);
+      console.log("Palette Colors:", paletteColors);
 
-    // Fetch color palette
-    fetchHuemintPalette().then(setColors);
+      // Generate random dimensions, animations, and blend modes
+      const newDimensions = Array.from({ length: 6 }, () =>
+        getRandomDimensions(400, 2000)
+      );
+      setDimensions(newDimensions);
 
-    // Generate random positions
-    const newPositions = Array.from({ length: 6 }, () => getRandomPosition());
-    setPositions(newPositions);
+      const newBlendModes = Array.from(
+        { length: 6 },
+        () => blendModes[Math.floor(Math.random() * blendModes.length)]
+      );
+      setBlendModesList(newBlendModes);
+    });
   }, []);
 
   return (
-    <div className="bg-black h-screen relative">
-      {colors.length > 0 && positions.length > 0 && (
-        <>
-          {colors.map((color, index) => (
-            <div
-              key={index}
-              className={`fixed rounded-full blur-3xl ${animation}`}
-              style={{
-                width: `${dimensions.width}px`,
-                height: `${dimensions.height}px`,
-                backgroundColor: color,
-                top: `${positions[index].top}px`,
-                left: `${positions[index].left}px`,
-              }}
-            ></div>
-          ))}
-        </>
-      )}
+    <div className="bg-gray-900 h-screen relative">
+      {colors.length > 0 &&
+        blendModesList.length > 0 &&
+        dimensions.length > 0 && (
+          <>
+            {colors.map((color, index) => {
+              return (
+                <div
+                  key={index}
+                  className={`fixed rounded-full blur-3xl ${blendModesList[index]}`}
+                  style={{
+                    width: `${dimensions[index].width}px`,
+                    height: `${dimensions[index].height}px`,
+                    backgroundColor: color,
+                    top: `${
+                      Math.random() *
+                      (window.innerHeight - dimensions[index].height)
+                    }px`,
+                    left: `${
+                      Math.random() *
+                      (window.innerWidth - dimensions[index].width)
+                    }px`,
+                  }}
+                ></div>
+              );
+            })}
+          </>
+        )}
     </div>
   );
 }

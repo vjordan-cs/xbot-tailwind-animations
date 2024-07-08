@@ -1,14 +1,10 @@
-export function getRandomDimensions(min: number, max: number): { width: number; height: number } {
-    const width = Math.floor(Math.random() * (max - min + 1) + min);
-    const height = Math.floor(Math.random() * (max - min + 1) + min);
-    return { width, height };
-  }
-  
+ 
   export const animations = [
     'animate-spin',
-    // 'animate-bounce',
-    // 'animate-circle',
-    // 'animate-snake',
+    'animate-bounce',
+    'animate-circle',
+    'animate-snake',
+    'animate-none',
     // 'animate-fade',
     // 'animate-pulse',
     // 'animate-slide',
@@ -23,20 +19,33 @@ export function getRandomDimensions(min: number, max: number): { width: number; 
   ];
 
   export const blendModes = [
-    'mix-blend-multiply',
-    'mix-blend-screen',
-    'mix-blend-overlay',
-    'mix-blend-dodge',
-    'mix-blend-burn',
-    'mix-blend-hard-light',
-    'mix-blend-soft-light',
+    // 'mix-blend-multiply',
+    // 'mix-blend-screen',
+    // 'mix-blend-overlay',
+    // 'mix-blend-dodge',
+    // 'mix-blend-burn',
+    // 'mix-blend-hard-light',
+    // 'mix-blend-soft-light',
     'mix-blend-difference',
-    'mix-blend-saturation',
-    'mix-blend-color',
-    'mix-blend-luminosity',
+    // 'mix-blend-saturation',
+    // 'mix-blend-color',
+    // 'mix-blend-luminosity',
   ]
 
   export function getRandomAnimation() {
     const randomIndex = Math.floor(Math.random() * animations.length);
     return animations[randomIndex];
   }
+
+  export function getRandomPosition(width: number, height: number) {
+    const top = Math.random() * height;
+    const left = Math.random() * width;
+    return { top, left };
+  }
+
+  export function getRandomDimensions(min: number, max: number): { width: number; height: number } {
+    const width = Math.floor(Math.random() * (max - min + 1) + min);
+    const height = Math.floor(Math.random() * (max - min + 1) + min);
+    return { width, height };
+  }
+  
